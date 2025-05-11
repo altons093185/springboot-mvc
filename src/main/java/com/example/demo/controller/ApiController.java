@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.BMI;
+import com.example.demo.model.Book;
 import com.example.demo.response.ApiResponse;
 
 @RestController // 免去撰寫 @ResponseBody, 但若要透過 jsp 渲染則不適用
@@ -100,5 +101,77 @@ public class ApiController {
 		return ResponseEntity.ok(ApiResponse.success("計算成功", data));
 
 	}
+
+	/**
+	 * 7. 多筆參數轉 Map name 書名(String), price 價格(Double), amount 數量(Integer), pub
+	 * 出刊/停刊(Boolean) 路徑: /book?name=Math&price=12.5&amount=10&pub=true 路徑:
+	 * /book?name=English&price=10.5&amount=20&pub=false 網址:
+	 * http://localhost:8080/api/book?name=Math&price=12.5&amount=10&pub=true 網址:
+	 * http://localhost:8080/api/book?name=English&price=10.5&amount=20&pub=false
+	 * 讓參數自動轉成 key/value 的 Map 集合
+	 */
+	@GetMapping(value = "/book", produces = "application/json;charset=utf-8")
+	public ResponseEntity<ApiResponse<Object>> getBookInfo(@RequestParam Map<String, Object> bookMap) {
+		System.out.println(bookMap);
+		return ResponseEntity.ok(ApiResponse.success("回應成功", bookMap));
+	}
+
+	/**
+	 * 8. 多筆參數轉指定 model 物件 路徑: 承上 網址: 承上
+	 */
+	@GetMapping(value = "/book2", produces = "application/json;charset=utf-8")
+	public ResponseEntity<ApiResponse<Book>> getBookInfo2(Book book) {
+		book.setId(1); // 設定 id
+		System.out.println(book);
+		return ResponseEntity.ok(ApiResponse.success("回應成功2", book));
+	}
+
+	/**
+	 * 9. 路徑參數 早期設計風格: 路徑: /book?id=1 得到 id = 1 的書 路徑: /book?id=3 得到 id = 3 的書
+	 * 
+	 * 現代設計風格(Rest): GET /books 查詢所有書籍 GET /book/1 查詢單筆書籍 POST /book 新增書籍 PUT
+	 * /book/1 修改單筆書籍 DELETE /book/1 刪除單筆書籍 // 路徑: /book/1 得到 id = 1 的書 路徑: /book/3
+	 * 得到 id = 3 的書 網址: http://localhost:8080/api/book/1 網址:
+	 * http://localhost:8080/api/book/3
+	 * 
+	 * @PathVariable(name = "id") Integer id 等價於
+	 * @PathVariable(value = "id") Integer id 也等價於 @PathVariable("id") Integer id
+	 *                     ps: 就只是符合不同開發者的需要 !
+	 * 
+	 */
+//	@GetMapping(value = "/book/{id}", produces = "application/json;charset=utf-8")
+//	// public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable(name =
+//	// "id") Integer id) {
+//	public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable Integer id) {
+//		// 書庫
+//		List<Book> books = List.of(new Book(1, "機器貓小叮噹", 12.5, 20, false), new Book(2, "老夫子", 10.5, 30, false),
+//				new Book(3, "好小子", 8.5, 40, true), new Book(4, "尼羅河的女兒", 14.5, 50, true));
+//		// 根據 id 搜尋該筆書籍
+//		Optional<Book> optBook = books.stream().filter(book -> book.getId().equals(id)).findFirst();
+//		// 判斷是否有找到
+//		if (optBook.isEmpty()) {
+//			return ResponseEntity.badRequest().body(ApiResponse.error("查無此書"));
+//		}
+//		Book book = optBook.get(); // 取得書籍
+//		return ResponseEntity.ok(ApiResponse.success("查詢成功", book));
+//	}
+//
+//	/**
+//	 * 請利用"路徑參數"設計出可以只顯示出刊或停刊的設計風格與方法 路徑: /book/pub/true 路徑: /book/pub/false 網址:
+//	 * http://localhost:8080/api/book/pub/true 網址:
+//	 * http://localhost:8080/api/book/pub/false
+//	 */
+//	@GetMapping("/book/pub/{isPub}")
+//	public ResponseEntity<ApiResponse<List<Book>>> queryBook(@PathVariable Boolean isPub) {
+//		// 書庫
+//		List<Book> books = List.of(new Book(1, "機器貓小叮噹", 12.5, 20, false), new Book(2, "老夫子", 10.5, 30, false),
+//				new Book(3, "好小子", 8.5, 40, true), new Book(4, "尼羅河的女兒", 14.5, 50, true));
+//		// 過濾出刊/停刊
+//		List<Book> queryBooks = books.stream().filter(book -> book.getPub().equals(isPub)).toList();
+//		if (queryBooks.size() == 0) {
+//			return ResponseEntity.badRequest().body(ApiResponse.error("查無此書"));
+//		}
+//		return ResponseEntity.ok(ApiResponse.success("查詢成功:" + (isPub ? "出刊" : "停刊"), queryBooks));
+//	}
 
 }
