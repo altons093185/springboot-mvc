@@ -3,10 +3,12 @@ package com.example.demo.controller;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -139,39 +141,45 @@ public class ApiController {
 	 *                     ps: 就只是符合不同開發者的需要 !
 	 * 
 	 */
-//	@GetMapping(value = "/book/{id}", produces = "application/json;charset=utf-8")
-//	// public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable(name =
-//	// "id") Integer id) {
-//	public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable Integer id) {
-//		// 書庫
-//		List<Book> books = List.of(new Book(1, "機器貓小叮噹", 12.5, 20, false), new Book(2, "老夫子", 10.5, 30, false),
-//				new Book(3, "好小子", 8.5, 40, true), new Book(4, "尼羅河的女兒", 14.5, 50, true));
-//		// 根據 id 搜尋該筆書籍
-//		Optional<Book> optBook = books.stream().filter(book -> book.getId().equals(id)).findFirst();
-//		// 判斷是否有找到
-//		if (optBook.isEmpty()) {
-//			return ResponseEntity.badRequest().body(ApiResponse.error("查無此書"));
-//		}
-//		Book book = optBook.get(); // 取得書籍
-//		return ResponseEntity.ok(ApiResponse.success("查詢成功", book));
-//	}
-//
-//	/**
-//	 * 請利用"路徑參數"設計出可以只顯示出刊或停刊的設計風格與方法 路徑: /book/pub/true 路徑: /book/pub/false 網址:
-//	 * http://localhost:8080/api/book/pub/true 網址:
-//	 * http://localhost:8080/api/book/pub/false
-//	 */
-//	@GetMapping("/book/pub/{isPub}")
-//	public ResponseEntity<ApiResponse<List<Book>>> queryBook(@PathVariable Boolean isPub) {
-//		// 書庫
-//		List<Book> books = List.of(new Book(1, "機器貓小叮噹", 12.5, 20, false), new Book(2, "老夫子", 10.5, 30, false),
-//				new Book(3, "好小子", 8.5, 40, true), new Book(4, "尼羅河的女兒", 14.5, 50, true));
-//		// 過濾出刊/停刊
-//		List<Book> queryBooks = books.stream().filter(book -> book.getPub().equals(isPub)).toList();
-//		if (queryBooks.size() == 0) {
-//			return ResponseEntity.badRequest().body(ApiResponse.error("查無此書"));
-//		}
-//		return ResponseEntity.ok(ApiResponse.success("查詢成功:" + (isPub ? "出刊" : "停刊"), queryBooks));
-//	}
+	@GetMapping(value = "/book/{id}", produces = "application/json;charset=utf-8")
+	// public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable(name =
+	// "id") Integer id) {
+	public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable Integer id) {
+		// 書庫
+		List<Book> books = List.of(new Book(1, "機器貓小叮噹", 12.5, 20, false), new Book(2, "老夫子", 10.5, 30, false),
+				new Book(3, "好小子", 8.5, 40, true), new Book(4, "尼羅河的女兒", 14.5, 50, true));
+		// 根據 id 搜尋該筆書籍
+		Optional<Book> optBook = books.stream().filter(book -> book.getId().equals(id)).findFirst();
+		// 判斷是否有找到
+		if (optBook.isEmpty()) {
+			return ResponseEntity.badRequest().body(ApiResponse.error("查無此書"));
+		}
+		Book book = optBook.get(); // 取得書籍
+		return ResponseEntity.ok(ApiResponse.success("查詢成功", book));
+	}
+
+	/**
+	 * 請利用"路徑參數"設計出可以只顯示出刊或停刊的設計風格與方法
+	 * 路徑: /book/pub/true
+	 * 路徑: /book/pub/false
+	 * 網址: http://localhost:8080/api/book/pub/true
+	 * 網址: http://localhost:8080/api/book/pub/false
+	 * */
+	@GetMapping("/book/pub/{isPub}")
+	public ResponseEntity<ApiResponse<List<Book>>> queryBook(@PathVariable Boolean isPub) {
+		// 書庫
+		List<Book> books = List.of(
+				new Book(1, "機器貓小叮噹", 12.5, 20, false),
+				new Book(2, "老夫子", 10.5, 30, false),
+				new Book(3, "好小子", 8.5, 40, true),
+				new Book(4, "尼羅河的女兒", 14.5, 50, true)
+		);
+		// 過濾出刊/停刊
+		List<Book> queryBooks = books.stream().filter(book -> book.getPub().equals(isPub)).toList();
+		if (queryBooks.size() == 0) {
+			return ResponseEntity.badRequest().body(ApiResponse.error("查無此書"));
+		}
+		return ResponseEntity.ok(ApiResponse.success("查詢成功:" + (isPub ? "出刊" : "停刊"), queryBooks));
+	}
 
 }

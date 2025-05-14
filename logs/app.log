@@ -174,3 +174,8 @@ java.lang.IllegalArgumentException: Invalid character found in the request targe
 2025-05-12T03:08:11.469+08:00  INFO 13464 --- [springboot-mvc] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-05-12T03:08:11.469+08:00  INFO 13464 --- [springboot-mvc] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-05-12T03:08:11.470+08:00  INFO 13464 --- [springboot-mvc] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-05-12T03:14:37.221+08:00  INFO 13464 --- [springboot-mvc] [RMI TCP Connection(16)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2025-05-12T03:14:37.223+08:00  INFO 13464 --- [springboot-mvc] [RMI TCP Connection(16)-127.0.0.1] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-12T03:14:37.230+08:00  INFO 13464 --- [springboot-mvc] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-12T03:14:37.233+08:00  INFO 13464 --- [springboot-mvc] [RMI TCP Connection(16)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-12T03:14:37.241+08:00  INFO 13464 --- [springboot-mvc] [RMI TCP Connection(16)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
