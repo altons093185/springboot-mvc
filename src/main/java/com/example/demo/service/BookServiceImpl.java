@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.BookException;
@@ -11,9 +12,11 @@ import com.example.demo.model.Book;
 import com.example.demo.repository.BookRepository;
 
 @Service
+
 public class BookServiceImpl implements BookService {
 
 	@Autowired
+	@Qualifier("bookRepositoryJdbcImpl") // 指定實現類
 	private BookRepository bookRepository;
 
 	@Override
