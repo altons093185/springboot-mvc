@@ -5,24 +5,58 @@ import './App.css'
 
 
 function App() {
-  const [books, setBooks] = useState([]);
-  const url = "http://localhost:8080/book";
+  const [books, setBooks] = useState([]); // 書籍列表
+  const [form, setForm] = useState({ id: null, name: '', price: '', amount: '', pub: false }); // 表單內容
+
+  const API_URL = "http://localhost:8080/book";
+
+  // 讀取書籍資料
 
   useEffect(() => {
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        setBooks(data.data);
-     })
-      .catch(err => {
-        console.log("載入失敗", err);
-      });
-  }, [])
+    fetchBooks();
+  }, []);
 
 
-  const handleAdd = (e) => {
-  console.log("handleAdd");
-  }
+// 讀取書籍資料  
+  const fetchBooks = async () => {
+    try {
+      const res = await fetch(API_URL);
+      const result =  await res.json();
+      setBooks(result.data || []);
+    } catch (error) {
+      console.error('讀取書籍錯誤:', error);
+    }
+  };
+
+
+  // 新增或更新
+  const handleAdd = () => {
+   
+
+  };
+
+// 編輯功能
+const handleEdit = () => {
+
+}
+
+// 刪除功能
+const handleDelete = async (id) => {
+  if (!window.confirm('確定要刪除這本書嗎？')) return;
+  try{
+    const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    const result = await res.json();
+    console.log(result);
+    // console.log(res);
+     if (res.ok) {
+        fetchBooks();
+      } else {
+        alert(result.message || '刪除失敗');
+      }
+    } catch (err) {
+      console.error('刪除錯誤:', err);
+    }
+  };
 
 
   return (
@@ -33,7 +67,7 @@ function App() {
         價格: <input name="price" required /><p />
         數量: <input name="amount" required /><p />
         出刊: <input name="pub" type="checkbox" /><p />
-        <button type="submit" onClick={handleAdd}>新增</button>
+        <button type="submit" onClick={()=>handleAdd}>新增</button>
       </form>
       <table border="1" cellPadding="4" cellSpacing="0">
         <caption>📖 書籍列表</caption>
@@ -57,8 +91,8 @@ function App() {
             <td>{book.pub?"是":"否"}</td>
 
             <td>
-              <button type='button'>編輯</button>
-              <button type='button'>刪除</button>
+              <button type='button' onClick={()=>handleEdit}>編輯</button>
+              <button type='button' onClick={()=>handleDelete(book.id)}>刪除</button>
             </td>
           </tr>))}
 
