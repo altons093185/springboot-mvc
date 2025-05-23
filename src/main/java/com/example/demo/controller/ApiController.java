@@ -142,8 +142,7 @@ public class ApiController {
 	 * 
 	 */
 	@GetMapping(value = "/book/{id}", produces = "application/json;charset=utf-8")
-	// public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable(name =
-	// "id") Integer id) {
+	// public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable(name = "id") Integer id) {
 	public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable Integer id) {
 		// 書庫
 		List<Book> books = List.of(new Book(1, "機器貓小叮噹", 12.5, 20, false), new Book(2, "老夫子", 10.5, 30, false),
@@ -168,12 +167,8 @@ public class ApiController {
 	@GetMapping("/book/pub/{isPub}")
 	public ResponseEntity<ApiResponse<List<Book>>> queryBook(@PathVariable Boolean isPub) {
 		// 書庫
-		List<Book> books = List.of(
-				new Book(1, "機器貓小叮噹", 12.5, 20, false),
-				new Book(2, "老夫子", 10.5, 30, false),
-				new Book(3, "好小子", 8.5, 40, true),
-				new Book(4, "尼羅河的女兒", 14.5, 50, true)
-		);
+		List<Book> books = List.of(new Book(1, "機器貓小叮噹", 12.5, 20, false), new Book(2, "老夫子", 10.5, 30, false),
+				new Book(3, "好小子", 8.5, 40, true), new Book(4, "尼羅河的女兒", 14.5, 50, true));
 		// 過濾出刊/停刊
 		List<Book> queryBooks = books.stream().filter(book -> book.getPub().equals(isPub)).toList();
 		if (queryBooks.size() == 0) {
